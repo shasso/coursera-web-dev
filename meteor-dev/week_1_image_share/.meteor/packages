@@ -23,3 +23,5 @@ check
 standard-minifier-css
 standard-minifier-js
 barbatus:stars-rating
+accounts-ui
+accounts-password

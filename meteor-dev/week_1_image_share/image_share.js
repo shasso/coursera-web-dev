@@ -1,14 +1,81 @@
 Images = new Mongo.Collection("images");
-console.log(Images.find().count());
+//console.log(Images.find().count());
 
 if (Meteor.isClient) {
+    Session.set("imageLimit", 8);   // limit # of images to load a time; store in Session variable
+    lastScrollTop = 0;
+
+    // scroll events are not supported directly by Meteor; hence the use of jquery
+    $(window).scroll(function (event) {
+        // test if we are near the bottom of the window
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            console.log(new Date());
+            // where are we in the page? 
+            var scrollTop = $(this).scrollTop();
+            // test if we are going down
+            if (scrollTop > lastScrollTop) {
+                // yes we are heading down...
+                console.log("going down at the bottom of the page");
+                Session.set("imageLimit", Session.get("imageLimit") + 4);
+            }
+
+            lastScrollTop = scrollTop;
+        }
+
+    });
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_AND_EMAIL"
+    });
 
     //Template.images.helpers({images:img_data});
     // in filter: field value -1 means highest value first
-    Template.images.helpers({images:
-            Images.find({}, { sort: {createdOn: -1, rating: -1 } })
-    });
+    Template.images.helpers({
+        images: function () {
+            if (Session.get("userFilter")) { // a logged in user set a filter
+                return Images.find({ createdBy: Session.get("userFilter") }, { sort: { createdOn: -1, rating: -1 }, limit: Session.get("imageLimit") });
+            }
+            else {
+                return Images.find({}, { sort: { createdOn: -1, rating: -1 }, limit: Session.get("imageLimit") });
+            }
 
+        },
+        filtering_images: function () {
+            if (Session.get("userFilter")) { // a logged in user set a filter
+                var user = Meteor.users.findOne({ _id: Session.get("userFilter") });
+                return user.username;
+            }
+            else {
+                return false;
+            }
+        },
+        getFilterUser: function () {
+            if (Session.get("userFilter")) { // a logged in user set a filter
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        getUser: function (user_id) {
+            var user = Meteor.users.findOne({ _id: user_id });
+            if (user) {
+                return user.username;
+            }
+            else {
+                return "anonymous";
+            }
+        }
+    });
+    Template.body.helpers({
+        username: function () {
+            if (Meteor.user()) {
+                console.log(Meteor.user().username);
+                // return Meteor.user().emails[0].address;
+                return Meteor.user().username;
+            }
+            else return 'anonymous internet user';
+        }
+    });
 
     Template.images.events({
         'click .js-image': function (event) {
@@ -30,7 +97,16 @@ if (Meteor.isClient) {
             Images.update({ _id: image_id },
                           { $set: { rating: rating } }
                 );
-        }
+        },
+        'click .js-show-image-form': function (event) {
+            $("#image_add_form").modal('show');
+        },
+        'click .js-set-image-filter': function (event) {
+            Session.set("userFilter", this.createdBy);
+        },
+        'click .js-unset-image-filter': function (event) {
+            Session.set("userFilter", undefined);
+        },
     });
 
     Template.image_add_form.events({
@@ -41,17 +117,17 @@ if (Meteor.isClient) {
             console.log("src: " + img_src, " alt: " + img_alt);
             //  We just put return false like this at the end of our event code in Meteor 
             // and it will just stop it from doing whatever the browser normally does when they submit a form.
-
-            Images.insert({
-                img_src: img_src,
-                img_alt: img_alt,
-                createdOn: new Date()
-            })
+            if (Meteor.user()) {
+                Images.insert({
+                    img_src: img_src,
+                    img_alt: img_alt,
+                    createdOn: new Date(),
+                    createdBy: Meteor.user()._id
+                })
+            }
+            $("#image_add_form").modal('hide'); // dismiss the modal
             return false;
         }
 
     });
 }
-
-
-
