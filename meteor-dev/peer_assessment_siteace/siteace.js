@@ -1,6 +1,67 @@
 Websites = new Mongo.Collection("websites");
 
+// set up security on Images collections
+Websites.allow({
+    insert: function (userId, doc) {
+        console.log("testing security on  insert");
+
+        if (Meteor.user()) { // users are logged in       
+            // the user is logged in, the image has the correct user id
+             return true;
+        }
+        else { // user is not logged in
+            return false;
+        }
+    },
+    update: function (userId, doc) {
+        console.log("testing security on  insert");
+
+        if (Meteor.user()) { // users are logged in 
+                // the user is logged in, the image has the correct user id
+                return true;          
+        }
+        else { // user is not logged in
+            return false;
+        }
+    }
+});
+
+
 if (Meteor.isClient) {
+    /// routing
+    Router.configure({
+        layoutTemplate: 'ApplicationLayout'
+    });
+
+    Router.route('/', function () {
+        this.render('welcome', {
+            to: "main"
+        });
+    });
+
+    Router.route('/websitelists', function () {
+        this.render('navbar', {
+            to: "navbar"
+        });
+        this.render('website_form', {
+            to: "form"
+        });
+        this.render('website_list', {
+            to: "main"
+        });
+    });
+
+    Router.route('/detail/:_id', function () {
+        this.render('navbar', {
+            to: "navbar"
+        });
+        this.render('detail', {
+            to: "main",
+            data: function () {
+                return Websites.findOne({ _id: this.params._id });
+            }
+        });
+    });
 
 	/////
 	// template helpers 
@@ -13,12 +74,34 @@ if (Meteor.isClient) {
 
 	// helper function that returns all available websites
 	Template.website_list.helpers({
-		websites:function(){
-		    return Websites.find({}, { sort: { voting: -1 } });
+	    websites: function () {
+	        var keyword = Session.get("searchFilter");
+	        if (keyword) {
+	            return Websites.find({}, { sort: { voting: -1 } });
+	        }
+	        else {
+	            return Websites.find({}, { sort: { voting: -1 } });
+	        }
+		    
+		},
+		comments: function () {
+		    return Websites.find({}, { comments: true });
 		}
 	});
 
-
+	Template.oneComment.helpers({
+	    getUser: function (user_id) {
+	        console.log("passed user id: " + user_id);
+	        var user = Meteor.users.findOne({ _id: user_id });
+	        //console.log("user: " + user.username);
+	        if (user) {
+	            return user.username;
+	        }
+	        else {
+	            return "anonymous";
+	        }
+	    }
+	});
 	/////
 	// template events 
 	/////
@@ -29,15 +112,7 @@ if (Meteor.isClient) {
 			// (this is the data context for the template)
 			var website_id = this._id;
 			console.log("Up voting website with id "+website_id);
-		    // put the code in here to add a vote to a website!
-			var current_web = Websites.findOne({ _id: website_id });
-			if (current_web.voting == undefined) {
-			    current_web.voting = 0;
-			}
-			var vote = current_web.voting + 1;
-            console.log("voting: " + current_web.voting)
-		    Websites.update({ _id: website_id },
-                     { $set: {voting: vote } }
+		    Websites.update({ _id: website_id }, { $inc: {voting: 1 } }
            );
 			return false;// prevent the button from reloading the page
 		}, 
@@ -49,14 +124,7 @@ if (Meteor.isClient) {
 			console.log("Down voting website with id "+website_id);
 
 			// put the code in here to remove a vote from a website!
-			var current_web = Websites.findOne({ _id: website_id });
-			if (current_web.voting == undefined) {
-			    current_web.voting = 0;
-			}
-			var vote = current_web.voting - 1;
-			console.log("voting: " + current_web.voting)
-			Websites.update({ _id: website_id },
-                     { $set: { voting: vote } }
+			Websites.update({ _id: website_id }, { $inc: { voting: -1 } }
            );
 			return false;// prevent the button from reloading the page
 		}
@@ -87,10 +155,44 @@ if (Meteor.isClient) {
                     
 			    })
 			}
-
 			return false;// stop the form submit from reloading the page
-
 		}
+	});
+
+    /// details 
+	Template.comment_form.events({
+	    "click .js-toggle-comment-form": function (event) {
+	        $("#comment_form").toggle('slow');
+	    },
+	    "submit .js-save-comment-form": function (event) {
+
+	        // here is an example of how to get the comment out of the form
+	        var website_item_id = this._id;
+	        var comment = event.target.comment.value;
+	        console.log("comment: " + comment + " for id: " + website_item_id);
+
+
+	        if (Meteor.user()) {
+	            //  put your website saving code in here!	
+	            var user_comment = {
+	                comment: comment,
+	                createdOn: new Date(),
+	                createdBy: Meteor.user()._id
+	            };
+
+	            Websites.update({ _id: website_item_id }, { $addToSet: { comments: user_comment } });
+	        }
+	        return false;// stop the form submit from reloading the page
+	    }
+	});
+
+	Template.navbar.events({
+	    "submit .js-set-search-filter": function (event) {
+	        var keyword = event.target.keyword.value;
+	        console.log("keyword: " + keyword);
+	        Session.set("searchFilter", keyword);
+	        return false;
+	    }
 	});
 }
 
