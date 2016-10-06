@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+  <form>
+      <div><button type="button" class="btn validate">First button</button></div>
+      <div><button type="button" class="btn validate">Second button</button></div>
+      <div><button type="button" class="btn">Third button</button></div>
+  </form>
+   <div id="display"></div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+            $('form').on('click', 'button.validate', function () {
+                $('#display').text('Clicked!!');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-size: 32px;
+        }
+
+        div {
+            margin-top: .1em;
+        }
+
+        .parent {
+            margin-left: .8em;
+        }
+
+        .child {
+            margin-left: 1.6em;
+        }
+    </style>
+</head>
+<body>
+
+  
+      
+    <div id="container">
+        <div >First</div>
+        <div >Second</div>
+        <div >Third</div>
+        <div id="target">Fourth (target)</div>
+        <div >Fifth</div>
+        <div >Sixth</div>
+        <div >Seventh</div>
+    </div>
+   
+    <!--place holder to display content for demo-->
+    <div id="display"></div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+           
+            var element = $('#target');
+            var container = $('#container');
+
+            var index = container.children().index(element);
+
+            $('#display').text('Index is ' + index).attr('style', 'color: blue');
+
+            // get returns a DOM element not a jQuery object
+            // container.children().get(index).attr('style', 'color:red');
+            var foundElement = container.children().get(index);
+            // convert to jQuery object
+            var jQueryObject = $(foundElement);
+            jQueryObject.attr('style', 'color:red');
+        });
+
+
+    </script>
+</body>
+</html>

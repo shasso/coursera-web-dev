@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <h1>Hello, H1</h1>
+    <!--<h1 class="demo">Another Hello H1</h1>
+    <h1 id="h1-id">Another Hello H1</h1>
+    <h1 custom="banner">Custom Attribute!</h1>
+    <h1 class="col-md-4">Class starts with col</h1>-->
+
+    <header>
+        <h1>Inside Header</h1>
+        <div><h1>A descendant headr</h1></div>
+    </header>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+
+            // update the text
+            // $('#h1-id').text('Hello, jQuery');
+            // $('[custom="banner"]').text('Found by equality');
+
+            // find elememnts based on attribute starts with
+            // $('[class^="col"]').text('Found by starts with');
+
+            // find elements based on attributed contains
+            // $('[class*="md"]').text('Found by contains');
+
+            // parent/child
+            $('header > h1').text('Parent Child');
+
+            // descendant
+            $('header h1').text('Descendant');
+        });
+    </script>
+</body>
+</html>

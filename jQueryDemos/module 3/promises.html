@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-size: 32px;
+        }
+
+        div {
+            margin-top: .1em;
+        }
+
+        .parent {
+            margin-left: .8em;
+        }
+
+        .child {
+            margin-left: 1.6em;
+        }
+        .red {
+            color: red;
+        }
+        .blue {
+            color: blue;
+        }
+        #box {
+            height: 5em;
+            width: 5em;
+            background-color: darkblue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+  <h2>Promises</h2>
+    <div id="output">click button to run script</div>
+    <div><button type="button" class="btn" id="executor">Run script</button></div>
+   
+    <div id="box">Sample content</div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+            $('#executor').click(function() {
+                // hide runs aysnchronoulsy
+                // the next line of code run immediately!
+                $('#box').hide(1000).promise().done(function () {
+                    // this code will run *after* the hide is complete
+                    $('#output').text('Box is now hidden!');
+                });
+               
+
+              
+            });
+        });
+
+
+    </script>
+</body>
+</html>

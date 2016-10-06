@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-size: 32px;
+        }
+
+        div {
+            margin-top: .1em;
+        }
+
+        .parent {
+            margin-left: .8em;
+        }
+
+        .child {
+            margin-left: 1.6em;
+        }
+    </style>
+</head>
+<body>
+
+  
+      
+    <div style="color:black" class="child stop">First</div>
+    <div style="color:black" class="child">Second</div>
+    <div style="color:black" class="child">Third</div>
+    <div id="target" style="color:black" class="child">Fourth (target)</div>
+    <div style="color:black" class="child">Fifth</div>
+    <div style="color:black" class="child">Sixth</div>
+    <div style="color:black" class="child stop-here">Seventh</div>
+   
+
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+           
+            // update previous
+            // $('#target').prev().attr('style', 'color:red');
+
+            // update ALL previous
+            // $('#target').prevAll().attr('style', 'color:red');
+
+            // update ALL but the first previous
+            // $('#target').prevUntil('.stop').attr('style', 'color:red');
+
+            // update ALL but the first previous
+            // $('#target').prevUntil('.stop').attr('style', 'color:red');
+
+
+            // update next element
+            // $('#target').next().attr('style', 'color:red');
+
+            // update ALL next elements
+             $('#target').nextAll().attr('style', 'color:red');
+
+            // update ALL but the first previous
+             //$('#target').prevUntil('.stop').attr('style', 'color:red');
+
+            // update ALL but the first previous
+            //$('#target').nextUntil('.stop-here').attr('style', 'color:red');
+
+        });
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-size: 32px;
+        }
+
+        div {
+            margin-top: .1em;
+        }
+
+        .parent {
+            margin-left: .8em;
+        }
+
+        .child {
+            margin-left: 1.6em;
+        }
+        .red {
+            color: red;
+        }
+        .blue {
+            color: blue;
+        }
+        #box {
+            height: 5em;
+            width: 5em;
+            background-color: darkblue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+  <h2>Ajax--jQuery.get</h2>
+   
+    <div>
+        <input type="number" class="form-control" id="data" />
+         <button type="button" class="btn" id="execute">Load Data</button>
+      
+    </div>
+  <div id="output">Place Holder</div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+            $('#execute').click(function () {
+                var url = 'http://' + 'localhost:4000/api/data/' + $('#data').val();
+                $.get(url, function (data) {
+                        $('#output').text(data.number);
+                    });
+               
+                console.log(url);
+            });
+  
+        });
+
+
+    </script>
+</body>
+
+
+
+
+</html>

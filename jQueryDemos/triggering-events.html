@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <button type="button" class="btn updater" id="first">First button</button>
+    <button type="button" class="btn updater" id="Second">Second button</button>
+    <button type="button" class="btn" id="target">Execute event handlers</button>
+   
+
+
+    <!--<button type="button" id="first">First button</button>
+    <button type="button" id="Second">Second button</button>
+    <button type="button" id="trigger">trigger</button>
+    <button type="button" id="trigger-handler">triggerHandler</button>-->
+
+
+   <div id="display"></div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            $('button.updater').click(function () {
+                var existingText = $('#display').text();
+                var buttonText = $(this).text();
+                $('#display').text(existingText + ' - ' + buttonText) 
+            });
+            $('#target').click(function () {
+                //perform a click event on the button
+                // $('button.updater').click();
+
+                // just execute the event hanlder code by using trigger
+                // $('button.updater').trigger('click'); // works even without click
+
+                // just execute the first one
+                $('button.updater').triggerHandler('click');
+            });
+           
+
+        });
+    </script>
+</body>
+</html>

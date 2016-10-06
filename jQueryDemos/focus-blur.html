@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <form>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" />
+            <span class="help" hidden="hidden">Please enter a name</span>
+        </div>
+        <div>
+            <label for="name">Email:</label>
+            <input type="text" class="form-control" id="email" />
+            <span class="help" hidden="hidden">Please enter an email</span>
+        </div>
+    </form>
+   
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+            $('input[type="text"]').focus(function () {
+                // convert this to jQueryObject
+                // find teh next span element
+                // then remov ethe hidden attribute
+                $(this).next('span.help').removeAttr('hidden');
+            }).blur(function () {           // you can chain events handler on the same element
+                $('span.help').attr('hidden', 'hidden');
+            });
+            
+        });
+    </script>
+</body>
+</html>

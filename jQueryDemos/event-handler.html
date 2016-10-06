@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        body {
+            font-size: 32px;
+        }
+
+        div {
+            margin-top: .1em;
+        }
+
+        .parent {
+            margin-left: .8em;
+        }
+
+        .child {
+            margin-left: 1.6em;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="target">Demo Element</div>
+    <div id="display">Another demo</div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            // this code will execute when the page is ready
+            //$('#target').click(function () {
+            //    // this is the click event handler for the div element
+            //    $('#display').text('Div was clicked!');
+            // });
+            //$('div').click(function() {
+            //    // alert('div was clicked');
+            //    // this is the **DOM*** element that raised the event
+            //    // convert to jQuery object
+            //    $(this).text('Clicked!');
+                
+            //});
+
+            // hover event
+            // raised when the user moves their mouse over the item
+            $('#target').hover(function () {
+                console.log('hover')
+            });
+
+            // mouseout
+            // raised when the user moves their mouse away from an item
+            $('#target').mouseout(function () {
+                console.log('mouse out');
+            });
+
+
+
+
+        });
+
+
+    
+
+
+    </script>
+</body>
+</html>

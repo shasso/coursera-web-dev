@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <button id="single">This only works once</button>
+    <div id="output"></div>
+
+   <div id="display"></div>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js"></script>
+    <script>
+        $(function () {
+            var counter = 1;
+            // this code will execute when the page is ready
+            //$('#single').on('click', function () {
+            //    $('#display').text('Clicked!! ' + counter);
+            //    counter++;
+            //});
+
+            $('#single').one('click', function () {
+                $('#output').text('You clicked on the button' + counter);
+                counter++;
+            });
+
+        });
+    </script>
+</body>
+</html>
